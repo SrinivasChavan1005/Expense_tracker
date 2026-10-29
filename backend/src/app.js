@@ -15,6 +15,10 @@ export function createApp() {
 
   // Hide the "X-Powered-By: Express" header and add standard security headers.
   app.disable("x-powered-by");
+  // On Vercel, requests arrive through Vercel's proxy. Trusting one proxy hop
+  // makes req.ip the real visitor's IP, so the login rate limit is per user
+  // instead of shared by everyone.
+  if (process.env.VERCEL) app.set("trust proxy", 1);
   app.use(helmet());
 
   // CORS: only our own frontend origin(s) may call the API from a browser,

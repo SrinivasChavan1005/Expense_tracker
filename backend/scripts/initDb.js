@@ -22,6 +22,7 @@ async function main() {
     port: env.db.port,
     user: env.db.user,
     password: env.db.password,
+    ssl: env.db.ssl,
     multipleStatements: true, // only here, for running the trusted schema file
   });
 

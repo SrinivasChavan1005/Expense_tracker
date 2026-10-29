@@ -10,8 +10,13 @@ export const pool = mysql.createPool({
   user: env.db.user,
   password: env.db.password,
   database: env.db.database,
+  ssl: env.db.ssl,
   waitForConnections: true,
-  connectionLimit: 10,
+  connectionLimit: env.db.connectionLimit,
+  // Close idle connections after 60s so a sleeping serverless function
+  // doesn't wake up holding a connection the database already dropped.
+  idleTimeout: 60000,
+  enableKeepAlive: true,
   // Return DATE columns as plain "YYYY-MM-DD" strings. Without this, mysql2
   // converts them to JS Date objects in the server's time zone, which can
   // shift a transaction to the previous day.
